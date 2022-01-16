@@ -1,0 +1,228 @@
+{% extends 'layout.html' %}
+{% block content %}
+<script src="../static/js/NahledJS.js" async></script>
+
+<link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='css/nahled.css') }}">
+
+<div class="w-100">
+
+  <div class=" flr color_cream">
+
+    <div class='my-legend '>
+      <div class='legend-title'>Škála <span id="skalaNahled">váhy </span> <button id="btnHistogram"
+          data-bs-toggle="modal" data-bs-target="#settingsModalHist">
+          <i id="histogramIcon" class="fas fa-chart-bar"></i></button></div>
+      <div class='legend-scale'>
+        <ul class='legend-labels d-inline-block'>
+          <li style="text-align: center;"><span style='background:rgb(15, 182, 173);'></span>Under</li>
+          <li style="text-align: left;"><span style='background:rgb(15, 182, 173);'></span>LTL</li>
+          <li><span style='background:#f5deb3;'></span> </li>
+        </ul>
+        <ul class='legend-labels d-inline-block'>
+          <li><span style='background:#FCFF3E;'></span>.</li>
+          <li><span style='background:#E0EC37;'></span></li>
+          <li><span style='background:#C3D92F;'></span></li>
+          <li><span style='background:#A6C627;'></span></li>
+          <li><span style='background:#89B31F;'></span>.</li>
+        </ul>
+        <ul class='legend-labels d-inline-block'>
+          <li><span style='background:#6DA118;'></span></li>
+          <li><span style='background:#42850D;'></span>Within </li>
+          <li><span style='background:#166801;'></span>LTL&UTL</li>
+          <li><span style='background:#42850D;'></span></li>
+          <li><span style='background:#6DA118;'></span></li>
+        </ul>
+        <ul class='legend-labels d-inline-block'>
+          <li><span style='background:#9b921c;'></span>.</li>
+          <li><span style='background:#a18118;'></span></li>
+          <li><span style='background:#a16618;'></span></li>
+          <li><span style='background:#a14e16;'></span></li>
+          <li><span style='background:#a13f18;'></span>.</li>
+        </ul>
+        <ul class='legend-labels d-inline-block'>
+          <li><span style='background:#f5deb3;'></span></li>
+          <li style="text-align: center;"><span style='background:#FF0000;'></span>Over</li>
+          <li style="text-align: left;"><span style='background:#FF0000;'></span>UTL</li>
+        </ul>
+      </div>
+
+    </div>
+  </div>
+  <div class="flr m-3">
+    <div class=" mibaYellow_ltl_utl_nahled">
+      <div class="d-inline-block">
+        <button id="settings" type="button" class="btn noPadtb miba flr marSpustit WS " data-bs-toggle="modal"
+          data-bs-target="#settingsModal">NASTAV <i class="fas fa-sliders-h"></i></button>
+      </div>
+    </div>
+  </div>
+
+  <div class="container d-flex">
+    <div class="row" style="position: absolute; float:left">
+      <div class="span4">
+        <img src="none"  id="NahledImgHeat" alt="" class="center-block" hidden>
+      </div>
+    </div>
+  </div>
+
+</div>
+<!-- ▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼ MODAL SETTINGS  ▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼ -->
+<div id="settingsModal" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
+  <!-- data-backdrop="static" data-keyboard="false" -->
+  <div class="modal-dialog modal-dialog-centered" role="document" >
+    <div class="modal-content">
+      <div class="modal-header-yellow">
+        <h6 class="d-inline-block modal-title ptx" id="ModalLabelLogin">Nastavení programu</h6>
+        <span class="d-inline-block close" data-bs-dismiss="modal" aria-label="Close"><strong>&times;</strong></span>
+      </div>
+      <div id="modalBody" class="modal-body p-5 bg-light">
+        <div class="form-group row mt-4">
+          <div class="col">
+            <label class="modalLabel w-50" for="NahledModalNastavenieTyp">Typ měření</label>
+
+
+            <select id="NahledModalNastavenieTyp" class="w-50" style="float: right;" onchange="setOptionTM(this);"
+              name="NameTypNahled">
+              {% for item in listOfPDruh %}
+              <option value='{{ item[1] }}'>{{ item[0] }}</option>
+              {% endfor %}
+            </select>
+            <div class="flr w-100 " id="pripojTyp"></div>
+
+          </div>
+        </div>
+        <div class="form-group row mt-4">
+          <div class="col">
+            <div class="form-check d-inline-flex">
+              <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1">
+              <label class="modalLabel form-check-label" for="flexRadioDefault1" style="padding-left: 5px;">
+                Production run
+              </label>
+            </div>
+            <div class="form-check d-inline-flex  w-50">
+              <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2" checked>
+              <label class="modalLabel form-check-label" for="flexRadioDefault2" style="padding-left: 5px;">
+                Datum
+              </label>
+            </div>
+          </div>
+        </div>
+        <div class="form-group row mt-4">
+          <div class="col">
+            <label class="modalLabel" for="NahledModalNastaveniePR">Production run</label>
+            <div class="w-50" style="float: right;">
+              <input type="number" id="NahledModalNastaveniePR" class="w-100" list="colours" required disabled>
+
+              <datalist id="colours">
+                {% for item in listOfPRun %}
+                <option value='{{ item[0] }}'>{{ item[0] }}</option>
+                {% endfor %}
+              </datalist>
+            </div>
+            <div class="flr w-100 " id="pripoj">
+
+            </div>
+          </div>
+          <!-- <input id="productionRun" type="number" class="form-control w-50" min="0" oninput="validity.valid||(value='');" value="251" required> -->
+        </div>
+        <div class="form-group row mt-4">
+          <div class="col">
+
+            <label class="modalLabel" for="dateOfNahled">Datum</label>
+            <input class="w-50" style="float: right;" id="dateOfNahled" readonly required>
+
+            <div class="flr w-100 " id="pripojDatum"></div>
+
+
+          </div>
+        </div>
+        <div class="form-group row mt-4">
+          <div class="col">
+            <label class="modalLabel" for="NahledModalNastavenieZacatek">Začátek</label>
+            <input type="time" onchange="nastavMinKonce(this);" min="00:00" value="00:00" class="w-50"
+              style="float: right;" id="NahledModalNastavenieZacatek" required>
+
+
+          </div>
+        </div>
+        <div class="form-group row mt-4">
+          <div class="col">
+
+            <label class="modalLabel" for="NahledModalNastavenieKonec">Konec</label>
+            <input type="time" min="07:00" max="23:59" value="23:59" onchange="enforceMinMax(this);" class="w-50"
+              style="float: right;" id="NahledModalNastavenieKonec" required>
+
+
+
+          </div>
+        </div>
+        <div class="form-group row mt-4">
+          <div class="col">
+
+            <label class="modalLabel" for="listTrecMat">FP</label>
+            <select id="listTrecMat" class="w-50" style="float: right;" onchange="setParUTLandLTL(this);"
+              name="NameTrecMatNahled">
+
+
+
+
+              <option value="" selected disabled hidden>Vyberte třecí materiál</option>
+              {% for item in listOfTrec %}
+              {% if( item[0] == 1) %}
+              <option value='{"val":"{{ item[0] }}","ltl":"{{ item[2] }}","utl":"{{ item[3] }}"}' class="WEIGHT2">
+                {{ item[1] }}</option>
+              {% elif( item[0] == 2) %}
+              <option value='{"val":"{{ item[0] }}","ltl":"{{ item[2] }}","utl":"{{ item[3] }}"}'
+                class="THICKNESS2 d-none">{{ item[1] }}</option>
+              {% endif %}
+              {% endfor %}
+            </select>
+
+
+          </div>
+        </div>
+
+
+        <div class="form-group row mt-4">
+          <div class="col">
+            <label for="ltl">LTL</label>
+            <input id="ltl" type="number" step="0.01" class="form-control " min="0"
+              oninput="validity.valid||(value='');" value="438.9034" required>
+
+          </div>
+
+          <div class="col">
+            <label for="utl">UTL</label>
+            <input id="utl" type="number" step="0.01" class="form-control" min="0" oninput="validity.valid||(value='');"
+              value="474.8431" required>
+            <div class="flr w-100 " id="pripojUTLLTL"></div>
+
+          </div>
+        </div>
+
+
+        <div class="mt-4 d-flex justify-content-center">
+          <button id="start" type="button" class="btn btn-success w-25 me-2">UKAŽ</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- ▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼ MODAL SETTINGS HISTOGRAM  ▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼ -->
+<div id="settingsModalHist" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
+  <!-- data-backdrop="static" data-keyboard="false" -->
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header-yellow">
+        <h6 class="d-inline-block modal-title ptx" id="ModalLabelHist">Histogram</h6>
+        <span class="d-inline-block close" data-bs-dismiss="modal" aria-label="Close"><strong>&times;</strong></span>
+      </div>
+      <div id="modalBodyHist" class="modal-body p-5 bg-light">
+        <img src="none" id="NahledImgHist" class="histSize" alt="" hidden>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+{% endblock %}

@@ -1,0 +1,68 @@
+{% extends 'layout.html' %}
+{% block content %}
+<!-- onsubmit="return validateForm()" -->
+<script src="../static/js/PracovniciJS.js" async></script>
+
+<form name="formPridajPR" id="IDformPridajPR" action="/pridajPR" method="POST">
+    <div style="padding-left: 0.5%;padding-top: 0.5%;">
+        <table>
+            <thead>
+                <tr>
+                    <th class="p-1  feedb-head" style="border: 5px solid white;" scope="col">Osobní číslo</th>
+                    <th class="p-1  feedb-head" style="border: 5px solid white;" scope="col">Heslo</th>
+                    <th class="p-1  feedb-head" style="border: 5px solid white;" scope="col">Potvrzení hesla</th>
+                    <th class="p-1  feedb-head" style="border: 5px solid white;" scope="col">Admin</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td style="border: 5px solid white;">
+                        <div class="form-group">
+                            <input type="text" pattern="\d*" id="PROsobneCisloID" name="OsCisName" size="15" minlength="1" maxlength="15">
+                        </div>
+                    </td>
+                    <td style="border: 5px solid white;">
+                        <div class="form-group">
+                            <input type="password" id="PRHesloID" name="Pass1Name" minlength="5" maxlength="15">
+                        </div>
+                    </td>
+                    <td style="border: 5px solid white;">
+                        <div class="form-group">
+                            <input type="password" id="PRPotvrHeslaID" name="Pass2Name" size="15" minlength="5" maxlength="15">
+                        </div>
+                    </td>
+                    <td style="border: 5px solid white;">
+                        <select id="PRAdmin" name="AdminName">
+                            <option selected="selected" value="0">NoAdmin</option>
+                            <option value="1">Admin</option>
+                        </select>
+                    </td>
+                    <td style="border: 5px solid white;">
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-success btn-sm">Přidej</button>
+                        </div>
+                    </td>
+                    <td style="border: 5px solid white;">
+                        <input type="checkbox" onclick="ShowPassword()">Show Passwords
+                    </td>
+                </tr>
+ 
+            </tbody>
+
+        </table>
+    </div>
+    <div style="padding-left: 1%;padding-bottom: 1%;border-spacing: 2px;">
+        <div class="fll w-100 " id="pripojPRnazov"></div>
+        <div class="fll w-100" id="pripojPRhesla"></div>
+    </div>
+</form>
+<div style="padding: 1%;border-spacing: 2px;">
+    <div id="PRTabel" style="background-color: #304e70;color:aqua;"></div>
+</div>
+
+
+
+
+
+{% endblock %}

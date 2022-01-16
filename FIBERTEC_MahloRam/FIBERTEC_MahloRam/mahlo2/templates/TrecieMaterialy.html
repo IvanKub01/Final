@@ -1,0 +1,77 @@
+{% extends 'layout.html' %}
+{% block content %}
+<!-- onsubmit="return validateForm()" -->
+<script  src="../static/js/TrecieMaterialyJS.js" async></script>
+
+<form name="formPridajTM" id="IDformPridajTM" action="/pridajTM" method="POST">
+    <div style="padding-left: 0.5%;padding-top: 0.5%;">
+        <table>
+            <thead>
+                <tr>
+                    <th class="p-1  feedb-head" style="border: 5px solid white;" scope="col">Typ měření</th>
+                    <th class="p-1  feedb-head" style="border: 5px solid white;" scope="col">Název</th>
+                    <th class="p-1  feedb-head" style="border: 5px solid white;" scope="col">LTL</th>
+                    <th class="p-1  feedb-head" style="border: 5px solid white;" scope="col">UTL</th>
+
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td style="border: 5px solid white;">
+                        <div class="form-group">
+                            <select id="DruhTMID" name=druh>
+                                {% for item in listOfPDruh %}
+                                <option value='{{ item[1] }}'>{{ item[0] }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </td>
+                    <td style="border: 5px solid white;">
+                        <div class="form-group">
+                            <input type="text" id="TMNazov" name="nazov" size="30" maxlength="50">
+                        </div>
+                    </td>
+                    <td style="border: 5px solid white;">
+                        <div class="form-group">
+                            <input id="ltlTMID" type="number" step=0.01 style="font-size: small;" name="ltl" min="0"
+                                oninput="validity.valid||(value='');" required>
+                        </div>
+                    </td>
+                    <td style="border: 5px solid white;">
+                        <div class="form-group">
+                            <input id="utlTMID" type="number" step=0.01 style="font-size: small;" name="utl" min="0"
+                                oninput="validity.valid||(value='');" required>
+                        </div>
+                    </td>
+                    <td style="border: 5px solid white;">
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-success btn-sm">Přidej FP</button>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td>
+                    </td>
+
+
+                    <td>
+                    </td>
+                    <td></td>
+                    <td></td>
+                </tr>
+            </tbody>
+
+        </table>
+    </div>
+    <div style="padding-left: 1%;padding-bottom: 1%;border-spacing: 2px;">
+        <div class="fll w-100 " id="pripojTRnazov"></div>
+        <div class="fll w-100" id="pripojTRhranice"></div>
+    </div>
+</form>
+<div style="padding: 1%;border-spacing: 2px;">
+    <div id="TMTabel" style="background-color: #304e70;color:aqua;"></div>
+</div>
+
+
+{% endblock %}

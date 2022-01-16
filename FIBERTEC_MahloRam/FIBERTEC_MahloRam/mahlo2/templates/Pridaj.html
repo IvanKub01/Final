@@ -1,0 +1,122 @@
+{% extends 'layout.html' %}
+{% block content %}
+<div style="padding: 0.5%;">
+    <table>
+
+        <thead>
+            <tr>
+                <th class="p-1  feedb-head" style="border: 5px solid white;" scope="row">Typ měření</th>
+
+                <th class="p-1  feedb-head" style="border: 5px solid white;" scope="row">Production run</th>
+
+                <th class="p-1  feedb-head" style="border: 5px solid white;" scope="row">Datum</th>
+                <th class="p-1  feedb-head" style="border: 5px solid white;" scope="row">Soubor</th>
+            </tr>
+
+
+        </thead>
+        <tbody>
+            <tr>
+                <form action="/pridaj" method="POST" enctype="multipart/form-data">
+
+                    <td style="border: 5px solid white;">
+                        <div class="form-group">
+                            <select id="listTypovPridaj" name="NameTypNahled">
+                                {% for item in listOfPDruh %}
+                                <option value='{{ item[1] }}'>{{ item[0] }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </td>
+                    <td style="border: 5px solid white;">
+                        <div class="form-group">
+                            <input type="number" class="text-field1 d-inline-block" list='DataPRunList' name="rnm"
+                                id="tt" min="0" oninput="validity.valid||(value='');" required>
+                            <datalist id="DataPRunList">
+                                {% for item in listOfPRun %}
+                                <option value='{{ item[0] }}'>
+                                    {% endfor %}
+                            </datalist>
+                        </div>
+                    </td>
+
+                    <td style="border: 5px solid white;">
+                        <div class="form-group">
+                            <input type="date" class="text-field1 d-inline-block" name="dt" id="dateOfRn" required>
+                        </div>
+                    </td>
+                    <td style="border: 5px solid white;">
+                        <div class="form-group">
+                            <div>
+
+                                <input type="file" class=" fll text-field1 d-inline-block" id="fpicker" name="file[]"
+                                    accept="text/plain" required>
+
+                            </div>
+                        </div>
+                    </td>
+                    <td style="border: 5px solid white;">
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-success btn-sm">Nahrát</button>
+                        </div>
+                    </td>
+                </form>
+            </tr>
+            <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td>{% with messages = get_flashed_messages() %}
+                    {% if messages %}
+
+                    {% for message in messages %}
+                    <p class="p-1" style="color: red;">{{ message }}</p>
+                    {% endfor %}
+
+                    {% endif %}
+                    {% endwith %}
+                    {% block body %}{% endblock %}
+                </td>
+                <td></td>
+            </tr>
+
+        </tbody>
+
+    </table>
+    <table>
+
+        <thead>
+            <tr>
+                <th class="p-1  feedb-head" style="border: 5px solid white;" scope="row">Typ měření</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <form name="formPridajDruh"  id="IDformPridajDruh" action="/pridajDruh" method="POST">
+
+                    <td style="border: 5px solid white;">
+                        <div class="form-group">
+                            <input type="text" maxlength="10" size="10" class="text-field1 d-inline-block"
+                                id="IDpridajDruh" name="fromDruh" required>
+                        </div>
+                    </td>
+
+
+                    <td style="border: 5px solid white;">
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-success btn-sm">Nahrát</button>
+                        </div>
+                    </td>
+                </form>
+            </tr>
+            
+        </tbody>
+
+    </table>
+    
+        <div style="padding-left: 1%;padding-bottom: 1%;border-spacing: 2px;">
+            <div class="fll w-100 " id="pripojDruhNazov"></div>
+        </div>
+    
+</div>
+{% endblock %}

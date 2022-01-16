@@ -1,0 +1,131 @@
+{% extends 'layout.html' %}
+{% block content %}
+<script  src="../static/js/NahledLive.js" async></script>
+
+<link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='css/live.css') }}">
+
+<!-- <div class="w-100 marTB"> -->
+<div class="w-100">
+  <div class=" flr color_cream ">
+
+    <div class='my-legend '>
+      <div class='legend-title'>Škála <span id="skalaNahledLive">váhy</span></div>
+      <div class='legend-scale'>
+        <ul class='legend-labels d-inline-block'>
+          <li><span style='background:#f5deb3;'></span> </li>
+        </ul>
+        <ul class='legend-labels d-inline-block'>
+          <li style="text-align: center;"><span style='background:rgb(15, 182, 173);'></span>Under LTL</li>
+          <li><span style='background:#f5deb3;'></span> </li>
+
+        </ul>
+
+        <ul class='legend-labels d-inline-block'>
+
+          <li style="text-align: center;"><span style='background:#FCFF3E;'></span></li>
+          <li style="text-align: center;"><span style='background:#E0EC37;'></span></li>
+          <li style="text-align: center;"><span style='background:#C3D92F;'></span></li>
+          <li style="text-align: center;"><span style='background:#A6C627;'></span></li>
+          <li style="text-align: center;"><span style='background:#89B31F;'></span></li>
+          <li style="text-align: center;"><span style='background:#6DA118;'></span></li>
+          <li style="text-align: center;"><span style='background:#42850D;'></span></li>
+          <li style="text-align: center;"><span style='background:#166801;'></span></li>
+          <li style="text-align: center;"><span style='background:#42850D;'></span></li>
+          <li style="text-align: center;"><span style='background:#6DA118;'></span></li>
+          <li style="text-align: center;"><span style='background:#9b921c;'></span></li>
+          <li style="text-align: center;"><span style='background:#a18118;'></span></li>
+          <li style="text-align: center;"><span style='background:#a16618;'></span></li>
+          <li style="text-align: center;"><span style='background:#a14e16;'></span></li>
+          <li style="text-align: center;"><span style='background:#a13f18;'></span></li>
+        </ul>
+        <ul class='legend-labels d-inline-block'>
+          <li><span style='background:#f5deb3;'></span></li>
+          <li style="text-align: center;"><span style='background:#FF0000;'></span>Over UTL</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+
+
+
+  <div class="flr m-3">
+    <div class=" mibaYellow_ltl_utl">
+
+
+      <div class="d-inline-block ms-1">
+        <label for="listTypovLive" class="form-label inputLabel">Typ</label>
+        <select id="listTypovLive" onchange="setOptionTM(this);"
+          class="CgetLiveNahladTyp form-control overritingDisplayForFormControl overritingWidthForFormControl blueBorderInput"
+          name="NameTypNahled">
+          {% for item in listOfPDruh %}
+          <option value='{{ item[1] }}'>{{ item[0] }}</option>
+          {% endfor %}
+        </select>
+      </div>
+      <div class="d-inline-block ms-1">
+        <label for="listTrecMatLive" class="inputLabel ">FP</label>
+        <select id="listTrecMatLive" onchange="setParUTLandLTL(this);"
+          class="form-control overritingDisplayForFormControl overritingWidthForFormControl blueBorderInput"
+          name="NameTrecMatNahled">
+          <option value="" selected disabled hidden>Vyberte třecí materiál</option>
+          {% for item in listOfTrec %}
+          {% if( item[0] == 1) %}
+          <option value='{"val":"{{ item[0] }}","ltl":"{{ item[2] }}","utl":"{{ item[3] }}"}' class="WEIGHT2Live ">{{
+            item[1] }}</option>
+          {% elif( item[0] == 2) %}
+          <option value='{"val":"{{ item[0] }}","ltl":"{{ item[2] }}","utl":"{{ item[3] }}"}'
+            class="THICKNESS2Live d-none">{{ item[1] }}</option>
+          {% endif %}
+          {% endfor %}
+        </select>
+      </div>
+      <div class="d-inline-block ms-1">
+        <label for="ltlSPUSTIT" class="inputLabel ">LTL</label>
+        <input id="ltlSPUSTIT" type="number"
+          class="form-control overritingDisplayForFormControl overritingWidthNumForFormControl inputNumWidth blueBorderInput"
+          step=0.01 min="0" oninput="validity.valid||(value='');" required>
+      </div>
+      <div class="d-inline-block ms-1">
+        <label for="utlSPUSTIT" class="inputLabel">UTL</label>
+        <input id="utlSPUSTIT" type="number" step=0.01
+          class="form-control overritingDisplayForFormControl overritingWidthNumForFormControl inputNumWidth blueBorderInput "
+          min="0" oninput="validity.valid||(value='');" required>
+      </div>
+      <div class="d-inline-block ms-1">
+        <button id="getLiveNahlad" type="button" class="btn noPadtb CgetLiveNahlad miba WS marSpustit">SPUSTIT
+          <i class="fas fa-circle" style="color: #fb5e5e;"></i></button>
+
+        <button id="zmenLiveNahlad" type="button" class="btn noPadtb CzmenLiveNahlad miba WS d-none marSpustit">ZMĚŇ
+          <i class="fas fa-circle" style="color: #fb5e5e;"></i></button>
+      </div>
+    </div>
+
+  </div>
+
+
+
+</div>
+
+
+
+
+<table class="w-100">
+  <thead>
+    <tr id='headRow' class="d-none">
+      <th style="text-align: center;">Date</th>
+      <th style="text-align: center;">Max</th>
+      <th style="text-align: center;">Min</th>
+      <th style="text-align: center;">Avg</th>
+    </tr>
+  </thead>
+  <tbody id="liveNahledBody">
+
+  </tbody>
+
+</table>
+
+
+
+
+{% endblock %}
